@@ -1,0 +1,21 @@
+GET http://localhost:4000/api/user/pathfive
+###
+POST http://localhost:4000/api/user/pathfive
+Content-Type: application/json
+
+{
+    "name":"private receiption",
+    "mean":"cuộc tiếp đón riêng",
+    "useto":"i have a private receiption in this morning"
+}
+###
+PUT http://localhost:4000/api/user/word?id=2
+Content-Type: application/json
+
+{
+    "name":"private receiption",
+    "mean":"cuộc tiếp đón riêng",
+    "useto":"i have a private receiption in this morning"
+}
+###
+DELETE http://localhost:4000/api/user/word?id=3
