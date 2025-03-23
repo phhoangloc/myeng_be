@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
-export const getPathFive = async (query: any) => {
+export const getPath = async (query: any) => {
     try {
-        const result = await prisma.pathFive.findMany({
+        const result = await prisma.path.findMany({
             where: {
                 archive: query.archive ? query.archive : undefined,
                 id: query.id ? Number(query.id) : undefined
@@ -14,27 +14,27 @@ export const getPathFive = async (query: any) => {
     }
 
 }
-export const createPathFive = async (body: any) => {
+export const createPath = async (body: any) => {
     try {
-        const result = await prisma.pathFive.create({ data: body })
+        const result = await prisma.path.create({ data: body })
         return result
     } catch (error) {
         return error
     }
 
 }
-export const updatePathFive = async (body: any, id: number) => {
+export const updatePath = async (body: any, id: number) => {
     try {
-        const result = await prisma.pathFive.update({ where: { id }, data: body })
+        const result = await prisma.path.update({ where: { id }, data: body })
         return result
     } catch (error) {
         return error
 
     }
 }
-export const deletePathFive = async (id: number) => {
+export const deletePath = async (id: number) => {
     try {
-        const result = await prisma.pathFive.delete({ where: { id } })
+        const result = await prisma.path.delete({ where: { id } })
         return result
     } catch (error) {
         return error

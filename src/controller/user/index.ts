@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { createWord, deleteWord, getWord, updateWord } from "../../responsiblity/word"
 import { fail } from "assert"
-import { createPathFive, deletePathFive, getPathFive, updatePathFive } from "../../responsiblity/pathfive"
+import { createPath, deletePath, getPath, updatePath } from "../../responsiblity/path"
 export const user = (req: Request, res: Response) => {
     res.json({
         msg: "hello user"
@@ -68,8 +68,8 @@ export const userDeleteWord = async (req: Request, res: Response) => {
         })
     }
 }
-export const userGetPathFive = async (req: Request, res: Response) => {
-    const result: any = await getPathFive(req.query)
+export const userGetPath = async (req: Request, res: Response) => {
+    const result: any = await getPath(req.query)
     if (result.code) {
         res.json({
             success: false,
@@ -82,8 +82,8 @@ export const userGetPathFive = async (req: Request, res: Response) => {
         })
     }
 }
-export const userCreatePathFive = async (req: Request, res: Response) => {
-    const result: any = await createPathFive(req.body)
+export const userCreatePath = async (req: Request, res: Response) => {
+    const result: any = await createPath(req.body)
     if (result.code) {
         res.json({
             success: false,
@@ -96,10 +96,10 @@ export const userCreatePathFive = async (req: Request, res: Response) => {
         })
     }
 }
-export const userUpdatePathFive = async (req: Request, res: Response) => {
+export const userUpdatePath = async (req: Request, res: Response) => {
     const id = Number(req.query.id)
     const body = req.body
-    const result: any = await updatePathFive(body, id)
+    const result: any = await updatePath(body, id)
     if (result.code) {
         res.json({
             success: false,
@@ -113,9 +113,9 @@ export const userUpdatePathFive = async (req: Request, res: Response) => {
     }
 
 }
-export const userDeletePathFive = async (req: Request, res: Response) => {
+export const userDeletePath = async (req: Request, res: Response) => {
     const id = Number(req.query.id)
-    const result: any = await deletePathFive(id)
+    const result: any = await deletePath(id)
     if (result.code) {
         res.json({
             success: false,

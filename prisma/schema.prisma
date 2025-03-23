@@ -21,14 +21,22 @@ model Word {
   useto       String      
   createdAt   DateTime    @default(now())
 }
-model PathFive {
+model Path {
   id              Int         @id @default(autoincrement())
-  archive         String      @default("pathfive")
+  archive         String      @default("pathone")
   question        String      @db.Text
   choose          String      @db.Text
-  answer          String      @db.Text
+  answer          Answer      
   questionTran    String      @db.Text
   answerTran      String      @db.Text
+  script          String?     @db.Text
+  audio           String?     
   explain         String      @db.Text
   createdAt       DateTime    @default(now())
+}
+enum Answer {
+  A
+  B
+  C
+  D
 }
