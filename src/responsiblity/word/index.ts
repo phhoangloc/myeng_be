@@ -5,8 +5,14 @@ export const getWord = async (query: any) => {
         const result = await prisma.word.findMany({
             where: {
                 archive: query.archive ? query.archive : undefined,
-                id: query.id ? Number(query.id) : undefined
-            }
+                id: query.id ? Number(query.id) : undefined,
+                book: query.book ? query.book : undefined
+            },
+            skip: query.skip ? Number(query.skip) : undefined,
+            take: query.limit ? Number(query.limit) : undefined,
+            orderBy: {
+                createdAt: 'desc',
+            },
         })
         return result
     } catch (error) {

@@ -18,25 +18,17 @@ model Word {
   archive     String      @default("word")
   name        String      @unique
   mean        String      
-  useto       String      
+  example     String?     @db.Text
+  book        String?     @db.Text
   createdAt   DateTime    @default(now())
 }
 model Path {
   id              Int         @id @default(autoincrement())
   archive         String      @default("pathone")
   question        String      @db.Text
-  choose          String      @db.Text
-  answer          Answer      
-  questionTran    String      @db.Text
-  answerTran      String      @db.Text
+  choose          String      @db.Text   
   script          String?     @db.Text
   audio           String?     
   explain         String      @db.Text
   createdAt       DateTime    @default(now())
-}
-enum Answer {
-  A
-  B
-  C
-  D
 }
