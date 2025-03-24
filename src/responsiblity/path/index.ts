@@ -6,7 +6,12 @@ export const getPath = async (query: any) => {
             where: {
                 archive: query.archive ? query.archive : undefined,
                 id: query.id ? Number(query.id) : undefined
-            }
+            },
+            skip: query.skip ? Number(query.skip) : undefined,
+            take: query.limit ? Number(query.limit) : undefined,
+            orderBy: {
+                createdAt: 'desc',
+            },
         })
         return result
     } catch (error) {
