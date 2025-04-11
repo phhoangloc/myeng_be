@@ -1,15 +1,11 @@
 import { Request, Response } from "express"
-import { createWord, deleteWord, getWord, updateWord } from "../../responsiblity/word"
-import { fail } from "assert"
-import { createPath, deletePath, getPath, updatePath } from "../../responsiblity/path"
-export const user = (req: Request, res: Response) => {
-    res.json({
-        msg: "hello user"
-    })
+import { GetOneUserRepository } from "../../respository/user"
+import { createBlog, deleteBlog, getBlog, updateBlog } from "../../respository/blog";
+interface CustomRequest extends Request {
+    id?: number;
 }
-
-export const userGetWord = async (req: Request, res: Response) => {
-    const result: any = await getWord(req.query)
+export const userGetMyself = async (req: CustomRequest, res: Response) => {
+    const result: any = await GetOneUserRepository({ id: req.id })
     if (result.code) {
         res.json({
             success: false,
@@ -22,8 +18,8 @@ export const userGetWord = async (req: Request, res: Response) => {
         })
     }
 }
-export const userCreateWord = async (req: Request, res: Response) => {
-    const result: any = await createWord(req.body)
+export const userGetBlog = async (req: Request, res: Response) => {
+    const result: any = await getBlog(req.query)
     if (result.code) {
         res.json({
             success: false,
@@ -36,95 +32,71 @@ export const userCreateWord = async (req: Request, res: Response) => {
         })
     }
 }
-export const userUpdateWord = async (req: Request, res: Response) => {
+export const userCreateBlog = async (req: CustomRequest, res: Response) => {
+    const body = req.body
+    body.host = { connect: { id: req.id } }
+    const result: any = await createBlog(body)
+    if (result.code || result.name) {
+        res.json({
+            success: false,
+            msg: result
+        })
+    } else {
+        res.json({
+            success: true,
+            data: result
+        })
+    }
+}
+export const userUpdateBlog = async (req: CustomRequest, res: Response) => {
     const id = Number(req.query.id)
     const body = req.body
-    const result: any = await updateWord(body, id)
-    if (result.code) {
-        res.json({
-            success: false,
-            msg: result
-        })
+    const blog: any = await getBlog({ id })
+    const _hostId = blog[0].hostId
+    if (_hostId === req.id) {
+        const result: any = await updateBlog(body, id)
+        if (result.code) {
+            res.json({
+                success: false,
+                msg: result
+            })
+        } else {
+            res.json({
+                success: true,
+                data: result
+            })
+        }
     } else {
         res.json({
-            success: true,
-            data: result
+            success: false,
+            msg: "this blog is not yours"
         })
     }
 
+
 }
-export const userDeleteWord = async (req: Request, res: Response) => {
-    const id = Number(req.query.id)
-    const result: any = await deleteWord(id)
-    if (result.code) {
-        res.json({
-            success: false,
-            msg: result
-        })
-    } else {
-        res.json({
-            success: true,
-            msg: "delete successfully"
-        })
-    }
-}
-export const userGetPath = async (req: Request, res: Response) => {
-    const result: any = await getPath(req.query)
-    if (result.code) {
-        res.json({
-            success: false,
-            msg: result
-        })
-    } else {
-        res.json({
-            success: true,
-            data: result
-        })
-    }
-}
-export const userCreatePath = async (req: Request, res: Response) => {
-    const result: any = await createPath(req.body)
-    if (result.code) {
-        res.json({
-            success: false,
-            msg: result
-        })
-    } else {
-        res.json({
-            success: true,
-            data: result
-        })
-    }
-}
-export const userUpdatePath = async (req: Request, res: Response) => {
+export const userDeleteBlog = async (req: CustomRequest, res: Response) => {
     const id = Number(req.query.id)
     const body = req.body
-    const result: any = await updatePath(body, id)
-    if (result.code) {
-        res.json({
-            success: false,
-            msg: result
-        })
+    const blog: any = await getBlog({ id })
+    const _hostId = blog.hostId
+    if (_hostId === req.id) {
+        const result: any = await deleteBlog(id)
+        if (result.code) {
+            res.json({
+                success: false,
+                msg: result
+            })
+        } else {
+            res.json({
+                success: true,
+                msg: "delete successfully"
+            })
+        }
     } else {
         res.json({
-            success: true,
-            data: result
-        })
-    }
-
-}
-export const userDeletePath = async (req: Request, res: Response) => {
-    const id = Number(req.query.id)
-    const result: any = await deletePath(id)
-    if (result.code) {
-        res.json({
             success: false,
-            msg: result
-        })
-    } else {
-        res.json({
-            success: true,
-            msg: "delete successfully"
+            msg: "this blog is not yours"
         })
     }
 }

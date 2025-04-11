@@ -12,7 +12,44 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
+model User {
+  id          Int         @id @default(autoincrement())
+  archive     String      @default("user")
+  username    String      @unique
+  password    String 
+  email       String      @unique
+  active      Boolean     @default(false)
+  position    Role        @default(user)
+  createdAt   DateTime    @default(now())
+  avataId     Int?           
+  avata       Pic?        @relation("UserAvata", fields: [avataId], references: [id])
+  pics        Pic[]
+  blogs       Blog[]
+}
+enum Role {
+  user
+  admin
+}
+model Pic {
+  id                Int           @id @default(autoincrement())
+  archive           String        @default("pic")
+  hostId            Int
+  host              User          @relation(fields: [hostId], references: [id])   
+  name              String      
+  createdAt         DateTime      @default(now())
+  avataOf           User[]        @relation("UserAvata")
+}
+model Blog  {
+  id                Int           @id @default(autoincrement())
+  archive           String        @default("blog")
+  hostId            Int
+  host              User          @relation(fields: [hostId], references: [id])   
+  slug              String        @unique
+  content           String       @db.Text
+  censor            Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updateDate        DateTime      @default(now())
+}
 model Word {
   id          Int         @id @default(autoincrement())
   archive     String      @default("word")

@@ -1,5 +1,12 @@
-GET http://localhost:4000/api/user/word
+POST http://localhost:4000/api/user/blog
+Content-Type: application/json
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzQ0MjY5Mzg4LCJleHAiOjE3NDQyNzY1ODh9.QUd8xUAi5QvEOOcJ3O2KpMQfObLc6UZRqqr0thqYW0I
+
+{
+    "detail":"hello"
+}
 ###
+
 POST http://localhost:4000/api/user/word
 Content-Type: application/json
 
@@ -19,4 +26,4 @@ Content-Type: application/json
     "useto":"i have a private receiption in this morning"
 }
 ###
-DELETE http://localhost:4000/api/user/word?id=1
+Get http://localhost:4000/api/path
