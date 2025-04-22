@@ -8,9 +8,9 @@ import moment from "moment";
 interface CustomRequest extends Request {
     id?: number;
 }
-export const GetPictureRepository = async (req: CustomRequest) => {
+export const GetFileRepository = async (req: CustomRequest) => {
     const prisma = await connect()
-    const pic = await prisma.pic.findMany({
+    const file = await prisma.file.findMany({
         where: {
             id: req.query.id ? Number(req.query.id) : undefined,
             hostId: req.id ? Number(req.id) : undefined
@@ -28,10 +28,10 @@ export const GetPictureRepository = async (req: CustomRequest) => {
             createdAt: 'desc',
         },
     })
-    return pic
+    return file
 }
 
-export const PostPictureRepository = async (req: CustomRequest) => {
+export const PostFileRepository = async (req: CustomRequest) => {
     const prisma = await connect()
     const form = new IncomingForm();
     const today = new Date();
@@ -44,30 +44,29 @@ export const PostPictureRepository = async (req: CustomRequest) => {
 
             await client.connect(sftpConfig).then(async () => {
                 await client.put(uploadFile[0].filepath, process.env.FTP_PATH + moment(today).format("YYYY.MM.DD_hh-mm-ss") + "_" + uploadFile[0].originalFilename)
-                await prisma.pic.create({ data: { hostId: Number(req.id), name: moment(today).format("YYYY.MM.DD_hh-mm-ss") + "_" + uploadFile[0].originalFilename } })
+                await prisma.file.create({ data: { hostId: Number(req.id), name: moment(today).format("YYYY.MM.DD_hh-mm-ss") + "_" + uploadFile[0].originalFilename } })
             });
             client.end()
         }
-
     })
 }
-export const DeletePictureRepository = async (req: CustomRequest) => {
+export const DeleteFileRepository = async (req: CustomRequest) => {
     const prisma = await connect()
     const user = await prisma.user.findFirst({ where: { id: Number(req.id) }, select: { position: true } })
-    const pic = await prisma.pic.findUnique({ where: { id: Number(req.query.id) } })
-    if (req.id === pic?.hostId || user?.position === "admin") {
+    const file = await prisma.file.findUnique({ where: { id: Number(req.query.id) } })
+    if (req.id === file?.hostId || user?.position === "admin") {
         const client = new Client();
         await client.connect(sftpConfig).then(async () => {
-            const result = pic && await client.delete(process.env.FTP_PATH + pic.name);
+            const result = file && await client.delete(process.env.FTP_PATH + file.name);
             if (result) {
-                await prisma.pic.delete({ where: { id: Number(req.query.id) } })
+                await prisma.file.delete({ where: { id: Number(req.query.id) } })
             } else {
             }
             client.end()
         })
     } else {
         return ({
-            msg: "this pic is not yours",
+            msg: "this file is not yours",
             success: false
         })
 

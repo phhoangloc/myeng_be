@@ -1,7 +1,7 @@
 import { Express } from "express"
 import { userRouter } from "./user"
 import { adminRouter } from "./admin"
-import { AnonimousGetBlog, AnonimousGetPath, login, logout, signup } from "../controller"
+import { AnonimousGetBlog, AnonimousGetPath, AnonimousGetWord, login, logout, signup } from "../controller"
 import { AdminMiddleware } from "../middeware/admin.middleware"
 import { UserMiddleware } from "../middeware/user.middleware"
 
@@ -14,4 +14,5 @@ export const route = (app: Express) => {
 
     app.get("/api/blog", AnonimousGetBlog)
     app.get("/api/path", AnonimousGetPath)
+    app.get("/api/word", AnonimousGetWord)
 }

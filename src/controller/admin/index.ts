@@ -3,6 +3,7 @@ import { createWord, deleteWord, getWord, updateWord } from "../../respository/w
 import { createPath, deletePath, getPath, updatePath } from "../../respository/path"
 import { GetManyUserRepository } from "../../respository/user"
 import { createBlog, deleteBlog, getBlog, updateBlog } from "../../respository/blog"
+import { DeleteFileRepository, GetFileRepository, PostFileRepository } from "../../respository/file"
 interface CustomRequest extends Request {
     id?: number;
 }
@@ -20,7 +21,7 @@ export const adminGetUser = async (req: Request, res: Response) => {
         })
     }
 }
-
+// word
 export const adminGetWord = async (req: Request, res: Response) => {
     const result: any = await getWord(req.query)
     if (result.code) {
@@ -81,6 +82,7 @@ export const adminDeleteWord = async (req: Request, res: Response) => {
         })
     }
 }
+// path
 export const adminGetPath = async (req: Request, res: Response) => {
     const result: any = await getPath(req.query)
     if (result.code) {
@@ -141,9 +143,10 @@ export const adminDeletePath = async (req: Request, res: Response) => {
         })
     }
 }
+// blog
 export const adminGetBlog = async (req: Request, res: Response) => {
     const result: any = await getBlog(req.query)
-    if (result.code) {
+    if (result.code || result.name) {
         res.json({
             success: false,
             msg: result
@@ -203,3 +206,55 @@ export const adminDeleteBlog = async (req: Request, res: Response) => {
         })
     }
 }
+// file
+export const adminGetFile = async (req: CustomRequest, res: Response) => {
+    const result: any = await GetFileRepository(req)
+    if (result.code || result.name) {
+        res.json({
+            success: false,
+            msg: result
+        })
+    } else {
+        res.json({
+            success: true,
+            data: result
+        })
+    }
+}
+export const adminCreateFile = async (req: CustomRequest, res: Response) => {
+    try {
+        const result = await PostFileRepository(req)
+        console.log(result)
+        res.json({
+            success: true,
+            msg: "your file is upload success",
+            // file: result
+        })
+
+    } catch (error) {
+        res.json({
+            success: false,
+            msg: "your file is upload fail"
+        })
+    }
+}
+
+export const adminDeleteFile = async (req: Request, res: Response) => {
+    try {
+        await DeleteFileRepository(req)
+        res.json({
+            success: true,
+            msg: "your file is deleted success"
+        })
+
+    } catch (error) {
+        res.json({
+            success: false,
+            msg: "your file is deleted fail"
+        })
+    }
+
+}
+
+
+

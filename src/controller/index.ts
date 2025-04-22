@@ -4,6 +4,7 @@ import { loginService } from "../services/login.service"
 import { serialize } from "cookie"
 import { getBlog } from "../respository/blog"
 import { getPath } from "../respository/path"
+import { getWord } from "../respository/word"
 export const signup = async (req: Request, res: Response) => {
     const body = req.body
     const result = await signUpService(body)
@@ -46,7 +47,7 @@ export const logout = async (req: Request, res: Response) => {
 
 export const AnonimousGetBlog = async (req: Request, res: Response) => {
     const result: any = await getBlog(req.query)
-    if (result.code) {
+    if (result.code || result.name) {
         res.json({
             success: false,
             msg: result
@@ -61,6 +62,20 @@ export const AnonimousGetBlog = async (req: Request, res: Response) => {
 export const AnonimousGetPath = async (req: Request, res: Response) => {
     const result: any = await getPath(req.query)
     if (result.code) {
+        res.json({
+            success: false,
+            msg: result
+        })
+    } else {
+        res.json({
+            success: true,
+            data: result
+        })
+    }
+}
+export const AnonimousGetWord = async (req: Request, res: Response) => {
+    const result: any = await getWord(req.query)
+    if (result.code || result.name) {
         res.json({
             success: false,
             msg: result

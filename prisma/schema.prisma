@@ -22,15 +22,15 @@ model User {
   position    Role        @default(user)
   createdAt   DateTime    @default(now())
   avataId     Int?           
-  avata       Pic?        @relation("UserAvata", fields: [avataId], references: [id])
-  pics        Pic[]
+  avata       File?        @relation("UserAvata", fields: [avataId], references: [id])
+  pics        File[]
   blogs       Blog[]
 }
 enum Role {
   user
   admin
 }
-model Pic {
+model File {
   id                Int           @id @default(autoincrement())
   archive           String        @default("pic")
   hostId            Int
@@ -38,6 +38,8 @@ model Pic {
   name              String      
   createdAt         DateTime      @default(now())
   avataOf           User[]        @relation("UserAvata")
+  Path              Path[]
+
 }
 model Blog  {
   id                Int           @id @default(autoincrement())
@@ -65,7 +67,8 @@ model Path {
   question        String      @db.Text
   choose          String      @db.Text   
   script          String?     @db.Text
-  audio           String?     
+  audioId         Int?     
+  audio           File?       @relation(fields: [audioId], references: [id])
   explain         String      @db.Text
   createdAt       DateTime    @default(now())
 }

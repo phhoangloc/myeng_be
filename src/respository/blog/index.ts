@@ -6,8 +6,12 @@ export const getBlog = async (query: any) => {
             where: {
                 archive: query.archive ? query.archive : undefined,
                 id: query.id ? Number(query.id) : undefined,
-                censor: query.sensor ? query.sensor : undefined,
+                censor: query.censor === undefined ? undefined : query.censor === "" ? undefined : Boolean(query.censor),
+                content: {
+                    contains: query.search ? query.search : undefined,
+                },
                 slug: query.slug ? query.slug : undefined,
+                hostId: query.hostId ? Number(query.hostId) : undefined
             },
             include: {
                 host: {

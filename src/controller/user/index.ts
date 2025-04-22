@@ -20,6 +20,7 @@ export const userGetMyself = async (req: CustomRequest, res: Response) => {
 }
 export const userGetBlog = async (req: Request, res: Response) => {
     const result: any = await getBlog(req.query)
+    console.log(result)
     if (result.code) {
         res.json({
             success: false,
